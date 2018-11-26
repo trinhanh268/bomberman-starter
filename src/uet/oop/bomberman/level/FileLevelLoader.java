@@ -5,13 +5,19 @@ import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.enemy.Balloon;
+import uet.oop.bomberman.entities.character.enemy.Oneal;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.destroyable.Brick;
+import uet.oop.bomberman.entities.tile.Portal;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.entities.tile.item.SpeedItem;
+import uet.oop.bomberman.entities.tile.item.FlameItem;
+import uet.oop.bomberman.entities.tile.item.BombItem;
 import uet.oop.bomberman.exceptions.LoadLevelException;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.*;
 public class FileLevelLoader extends LevelLoader {
 
 	/**
@@ -28,6 +34,27 @@ public class FileLevelLoader extends LevelLoader {
 	public void loadLevel(int level) {
 		// TODO: đọc dữ liệu từ tệp cấu hình /levels/Level{level}.txt
 		// TODO: cập nhật các giá trị đọc được vào _width, _height, _level, _map
+		try{
+			InputStream input = FileLevelLoader.class.getResourceAsStream("/levels/level" + level + ".txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(input));
+			String data = br.readLine();
+			String phantu[] = data.split(" ");
+			_level = Integer.parseInt(phantu[0]);
+			_height = Integer.parseInt(phantu[1]);
+			_width = Integer.parseInt(phantu[2]);
+			_map = new char[_height][_width];
+			String line ;
+			for(int i = 0; i < _height; i++)
+            {
+                line = br.readLine();
+                for(int j = 0; j < _width; j++)
+                    _map[i][j] = line.charAt(j);
+            }
+		}
+		catch(IOException e)
+        {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
